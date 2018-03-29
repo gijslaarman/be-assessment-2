@@ -1,0 +1,11 @@
+<% include head.ejs %>
+
+<h2>Alle users:</h2>
+<% for (var i = 0; i < data.length; i++) { %>
+  <h3><a href="/<%= data[i]._id %>"><%= data[i].firstname %></a></h3>
+  <ul>
+    <li>Leeftijd: <%= data[i].age %></li>
+  </ul>
+<% } %>
+
+<% include tail.ejs %>

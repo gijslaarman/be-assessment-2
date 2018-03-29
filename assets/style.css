@@ -22,8 +22,11 @@ fieldset {
   text-align: center;
 }
 
-input {
+label {
   display: block;
+  width: 100%;
+}
+input {
   width: 100%;
 }
 
