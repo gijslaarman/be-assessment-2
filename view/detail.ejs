@@ -1,11 +1,13 @@
-<%- include head.ejs %>
-
-<h2><%= data.firstname %></h2>
-
-<ul>
-  <h3>Details:</h3>
-  <li>leeftijd: <%= data.age %></li>
-  <li>Email: <%= data.email %></li>
-</ul>
-
+<% include partials/head.ejs %>
+<% include partials/header.ejs %>
+<main>
+  <a href="/all"> <- terug </a>
+  <div class="detail-container">
+    <img src="http://via.placeholder.com/300x300" alt="Userphoto">
+    <h2><%= data.firstname %></h2>
+      <h3>Details:</h3>
+      <p>leeftijd: <%= data.age %></p>
+      <p>Email: <%= data.email %></p>
+  </div>
+</main>
 <%- include tail.ejs %>

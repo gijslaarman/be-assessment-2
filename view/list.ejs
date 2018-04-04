@@ -1,11 +1,18 @@
-<% include head.ejs %>
-
-<h2>Alle users:</h2>
-<% for (var i = 0; i < data.length; i++) { %>
-  <h3><a href="/<%= data[i]._id %>"><%= data[i].firstname %></a></h3>
-  <ul>
-    <li>Leeftijd: <%= data[i].age %></li>
-  </ul>
-<% } %>
+<% include partials/head.ejs %>
+<% include partials/header.ejs %>
+<main>
+  <h2>Alle users:</h2>
+  <section class="list-container">
+    <% for (var i = 0; i < data.length; i++) { %>
+      <a href="/<%= data[i]._id %>">
+        <div class="list-result">
+          <img src="http://via.placeholder.com/150x150" alt="">
+          <h3><%= data[i].firstname %></h3>
+          <p>Leeftijd: <%= data[i].age %></p>
+        </div>
+      </a>
+    <% } %>
+  </section>
+</main>
 
 <% include tail.ejs %>

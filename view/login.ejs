@@ -1,20 +1,20 @@
-<%- include('head.ejs') %>
+<%- include partials/head.ejs %>
 
-<form class="" action="/" method="get">
-
+<form action="/log-in" method="post">
+<h2>Log in:</h2>
   <fieldset>
-    <p>Log in:</p>
-
-    <label>Naam:</label>
-    <input type="text" name="name" value="">
-    <label>Password:</label>
+    <label> Email:
+    <input type="text" name="email" value="">
+    </label>
+    <label> Password:
     <input type="password" name="password" value="">
-
-    <input class="btn" type="submit" name="submit" value="Meld je aan">
-
-    <br>
-    <a href="registration">Meld je aan bij Horeca Dating</a>
+    </label>
   </fieldset>
+
+  <input class="btn" type="submit" name="submit" value="Meld je aan">
+
 </form>
+
+<a href="/sign-up">Meld je aan bij Horeca Dating</a>
 
 <%- include('tail.ejs') %>

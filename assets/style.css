@@ -1,43 +1,199 @@
 *, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
+}
+
+body {
   font-family: 'Roboto', sans-serif;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+main {
+  width: 85%;
+  margin: 0 auto;
+  margin-top: 7em;
+}
+
+a {
+  display: block;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  margin: 1em 0;
+}
+
+/* --- Form ---
+Everything styled for the forms
+*/
+@media (min-width: 300px) {
+  body {
+    background-color: #228ae6;
+  }
+  form {
+    width: 100%;
+  }
+  fieldset {
+    width: 90%;
+  }
+  .btn {
+    width: 85%;
+  }
+  a {
+    color: white;
+  }
+}
+
+@media (min-width: 700px) {
+  body {
+    background-color: #fcfcfc;
+  }
+  form {
+    width: 80%;
+    padding: 30px;
+    max-width: 800px;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
+  }
+  fieldset {
+    width: 70%;
+  }
+  .btn {
+    width: 67%;
+  }
+  a {
+  color: #228ae6;
+  }
+}
+
+@media (min-width: 1000px) {
+
 }
 
 form {
-  height: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: #228ae6;
+  text-align: center;
+  color: white;
+  margin: 0 auto;
+  margin-top: 2em;
 }
 
 fieldset {
-  background-color: lightgrey;
-  text-align: center;
+  border: none;
+  margin: 0 auto;
+  border-bottom: solid 1px white;
+}
+
+fieldset:last-of-type {
+  border: 0;
 }
 
 label {
   display: block;
   width: 100%;
+  margin-top: 1em;
+  text-align: left;
+  font-weight: 500;
 }
 input {
   width: 100%;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 0;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+  height: 48px;
+  padding: 0 18px;
+  color: white;
+  outline: none;
+}
+
+input:hover {
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+input:focus {
+  border: 2px solid rgba(255, 255, 255, 0.9)
 }
 
 .btn {
-  width: 95%;
   cursor: pointer;
   margin: 0 auto;
   margin-top: 1em;
-  background-color: yellow;
+  background-color: #e66a22;
   border-radius: 3px;
   border: none;
   font-size: 24px;
   padding: 10px;
+  color: white;
+}
+
+.btn:hover {
+  background-color: rgba(230, 106, 34, 0.9);
+  border: 0;
+}
+
+nav ul{
+  width: 80%;
+  margin: 0 auto;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* --- detail page ---
+  Everything styled for the detailspage for each person
+*/
+
+.detail-container {
+  background-color: white;
+  padding: 30px;
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
+  width: 400px;
+  margin: 0 auto;
+}
+
+.detail-container img {
+  width: 300px;
+  margin: 0 auto;
+}
+
+/* --- header ---
+  Everything styled for the header.
+*/
+
+nav ul a {
+  color: white;
+}
+
+nav {
+  width: 100%;
+  background-color: #228ae6;
+  box-shadow: 0 2px 1px #777;
+  position: fixed;
+  top: 0;
+}
+
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0 auto;
+  margin-top: 1em;
+}
+
+.list-container a {
+  color: black;
+}
+
+.list-result {
+  margin: 1em;
+  box-shadow: 0 2px 1px #777;
+  padding: 10px;
+  background-color: white;
+}
+
+.account-management a {
+  display: inline-block;
+}
+
+.account-management p {
+  display: inline-block;
+  color: white;
 }

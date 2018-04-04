@@ -1,14 +1,23 @@
-<%- include('head.ejs') %>
+<%- include partials/head.ejs %>
 
-<form class="" action="/" method="post">
+<a href="/">Terug naar start</a>
+
+<form action="/sign-up" method="post">
+
+  <h2>Meld je aan:</h2>
   <fieldset>
-  <label>Voornaam: <input name="firstname"></label>
-  <label>Achternaam: <input name="lastname"></label>
-  <label>Leeftijd: <input type="number" name="age"></label>
-  <label>Email: <input name="email"></label>
-  <label>Kies een wachtwoord: <input type="password" name="password"></label>
-  <input type="submit" class="btn" value="Registreer!">
+  <label>Voornaam: <input name="firstname" required></label>
+  <label>Achternaam: <input name="lastname" required></label>
+  <label>Leeftijd: <input type="number" name="age" required></label>
   </fieldset>
+
+  <fieldset>
+  <label>Email: <input name="email" required></label>
+  <label>Kies een wachtwoord: <input type="password" name="password" required></label>
+  <label>Herhaal wachtwoord: <input type="password" name="passwordConfirm" required></label>
+  </fieldset>
+
+  <input type="submit" class="btn" value="Registreer!">
 </form>
 
 <%- include('tail.ejs') %>
