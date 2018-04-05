@@ -3,21 +3,25 @@
 <a href="/">Terug naar start</a>
 
 <form action="/sign-up" method="post">
+    <h2>Meld je aan:</h2>
+    <fieldset>
+      <label>Voornaam: <input name="firstname" value="<%if(user){%><%=user.firstname%><%}%>" required></label>
+      <label>Achternaam: <input name="lastname" value="<%if(user){%><%=user.lastname%><%}%>" required></label>
+      <label>Leeftijd: <input type="number" name="age" value="<%if(user){%><%=user.age%><%}%>" required></label>
+    </fieldset>
 
-  <h2>Meld je aan:</h2>
-  <fieldset>
-  <label>Voornaam: <input name="firstname" required></label>
-  <label>Achternaam: <input name="lastname" required></label>
-  <label>Leeftijd: <input type="number" name="age" required></label>
-  </fieldset>
-
-  <fieldset>
-  <label>Email: <input name="email" required></label>
-  <label>Kies een wachtwoord: <input type="password" name="password" required></label>
-  <label>Herhaal wachtwoord: <input type="password" name="passwordConfirm" required></label>
-  </fieldset>
+    <fieldset>
+      <% if (error) { %>
+        <p>
+          <%= error %>
+        </p>
+      <% } %>
+      <label>Email: <input name="email" value="<%if(user){%><%=user.email%><%}%>" required></label>
+      <label>Kies een wachtwoord: <input type="password" name="password" required></label>
+      <label>Herhaal wachtwoord: <input type="password" name="passwordConfirm" required></label>
+    </fieldset>
 
   <input type="submit" class="btn" value="Registreer!">
 </form>
 
-<%- include('tail.ejs') %>
+<script src="../assets/js/registration.js"></script>

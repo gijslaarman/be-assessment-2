@@ -4,10 +4,9 @@
   <a href="/all"> <- terug </a>
   <div class="detail-container">
     <img src="http://via.placeholder.com/300x300" alt="Userphoto">
-    <h2><%= data.firstname %></h2>
+    <h2><%= user.firstname %></h2>
       <h3>Details:</h3>
-      <p>leeftijd: <%= data.age %></p>
-      <p>Email: <%= data.email %></p>
+      <p>leeftijd: <%= user.age %></p>
+      <p>Email: <%= user.email %></p>
   </div>
 </main>
-<%- include tail.ejs %>

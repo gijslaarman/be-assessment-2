@@ -3,16 +3,14 @@
 <main>
   <h2>Alle users:</h2>
   <section class="list-container">
-    <% for (var i = 0; i < data.length; i++) { %>
-      <a href="/<%= data[i]._id %>">
+    <% for (var i = 0; i < user.length; i++) { %>
+      <a href="/<%= user[i]._id %>">
         <div class="list-result">
           <img src="http://via.placeholder.com/150x150" alt="">
-          <h3><%= data[i].firstname %></h3>
-          <p>Leeftijd: <%= data[i].age %></p>
+          <h3><%= user[i].firstname %></h3>
+          <p>Leeftijd: <%= user[i].age %></p>
         </div>
       </a>
     <% } %>
   </section>
 </main>
-
-<% include tail.ejs %>

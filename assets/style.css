@@ -8,9 +8,8 @@ body {
 }
 
 main {
-  width: 85%;
-  margin: 0 auto;
-  margin-top: 7em;
+  width: 80%;
+  margin: 8em auto;
 }
 
 a {
@@ -19,6 +18,14 @@ a {
   text-align: center;
   text-decoration: none;
   margin: 1em 0;
+}
+
+h2 {
+  margin-top: 1em;
+}
+
+p {
+  margin-top: 1em;
 }
 
 /* --- Form ---
@@ -49,22 +56,18 @@ Everything styled for the forms
   form {
     width: 80%;
     padding: 30px;
-    max-width: 800px;
+    max-width: 700px;
     box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
   }
   fieldset {
-    width: 70%;
+    width: 80%;
   }
   .btn {
-    width: 67%;
+    width: 76.5%;
   }
   a {
   color: #228ae6;
   }
-}
-
-@media (min-width: 1000px) {
-
 }
 
 form {
@@ -73,6 +76,23 @@ form {
   color: white;
   margin: 0 auto;
   margin-top: 2em;
+  margin-bottom: 5em;
+}
+
+form p {
+  text-align: left;
+  color: #e66a22;
+  background-color: white;
+  padding: 10px 15px;
+  border: 1px solid #e66a22;
+}
+
+.firstForm {
+  display: block;
+}
+
+.secondForm {
+  display: block;
 }
 
 fieldset {
@@ -136,6 +156,21 @@ nav ul{
   display: flex;
   justify-content: space-between;
 }
+
+.radioButton-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.radioButton {
+  text-align: center;
+}
+
+.radioButton input {
+  display: block;
+  margin: 0 auto;
+}
+
 
 /* --- detail page ---
   Everything styled for the detailspage for each person

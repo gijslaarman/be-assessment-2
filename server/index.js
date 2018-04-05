@@ -50,31 +50,70 @@ express()
 .listen(port)
 
 // Title "template"
-const htmltitle = 'Horeca Dating - '
 
 function myAccount(req, res) {
-  console.log(req.session.user)
-  res.render('myaccount.ejs', {title: htmltitle + 'my Account'})
+  var result = {
+    title: undefined,
+    user: undefined,
+    error: undefined
+  }
+
+  if (req.session.user) {
+    // Check if the user is logged in.
+    result.title = 'Horeca Dating - Mijn Account'
+    result.user = req.session.user
+
+    res.render('myaccount.ejs', result)
+  } else {
+    // No access to myAccount when you're not logged in.
+    result
+      .title = 'Horeca Dating - Verboden'
+      .error = {
+        code: 401,
+        details: 'Geen toegang'
+      }
+  }
+
 }
 
 function start(req, res) {
+  var result = {
+    title: undefined,
+    user: undefined,
+    error: undefined
+  }
+
   if (req.session.user) {
-    res.render('dashboard.ejs'), {title: htmltitle + 'dashboard'}
+    // User is logged in
+    result.title = 'Horeca Dating - Dashboard'
+    result.user = (req.session.user)
+
+    res.render('dashboard.ejs', result)
   } else {
     // User is not logged in.
-    res.render('login.ejs'), {title: htmltitle + 'Login'}
+    result.title = 'Horeca Dating - Login'
+
+    res.render('login.ejs', result)
   }
 }
 
 function login(req, res) {
+  var result = {
+    title: undefined,
+    user: undefined,
+    error: undefined
+  }
   var email = req.body.email
   var password = req.body.password
 
   if (!email || !password) {
     // Email and password are not given
+    result.title = 'Horeca Dating - 400'
+    result.error = 'Email of wachtwoord mist'
+
     res
       .status(400)
-      .send('Username or password are missing')
+      .render('login.ejs', result)
 
     return
   }
@@ -87,22 +126,31 @@ function login(req, res) {
     } else if (err){
       throw err
     } else {
-      // If the email cannot be found than it will
+      // If the email cannot be found than it will display this error
+      result.title = 'Horeca Dating - 401'
+      result.error = 'Email bestaat niet'
+
       res
         .status(401)
-        .send('Username does not exist')
+        .render('login.ejs', result)
       return
     }
 
     function onverify(match) {
       if (match) {
         console.log('Logged in ' + user.email)
-        req.session.user = {username: user.email}
-        res.redirect(301, '/dashboard')
+        console.log(user)
+        req.session.user = user
+        console.log(req.session.user)
+        res.redirect('/dashboard')
       } else {
+        // If it's not a match that means the password is incorrect
+        result.title = 'Horeca Dating - 401'
+        result.error = 'Wachtwoord is niet correct'
+
         res
           .status(401)
-          .send('Password incorrect')
+          .render('login.ejs', result)
       }
     }
   })
@@ -120,68 +168,136 @@ function logout(req, res) {
 
 function getDetail(req, res) {
   var id = req.params.id
-
-  if (/* id doesn't exist */ false) {
-    db.collection('users').findOne({
-      $contains:{id}
-    })
-  } else {
-    db.collection('users').findOne({
-      _id: mongo.ObjectId(id)
-    }, done)
+  var result = {
+    title: undefined,
+    user: undefined,
+    error: undefined
   }
 
+  if (req.session.user) {
 
-  function done(err, data) {
-    var result = {title: htmltitle + 'details', data: data}
+    if(id.length === 12 || id.length === 24) {
+      db.collection('users').findOne({_id: mongo.ObjectId(id)}, done)
 
-    if (err) {
-      throw err
+      function done(err, data) {
+        if (data) {
+          // When the db finds the user it will display the data
+          result.title = 'Horeca Dating - Details'
+          result.user = data
+
+          res.render('detail.ejs', result)
+        } else if (err) {
+          // Unknown error
+          throw err
+        } else {
+          // if the id is the correct length but doesn't exist in MongoDb it will display the 404 error.
+          result.title = 'Horeca Dating - Niet Gevonden'
+          result.error = {
+            code: 404,
+            details: 'Pagina niet gevonden'
+          }
+
+          res
+            .status(404)
+            .render('error.ejs', result)
+        }
+      }
+
     } else {
-      res.render('detail.ejs', result)
+      // If the user is logged in but the id is not correct send a 404 error.
+      result.title = 'Horeca Dating - Niet Gevonden'
+      result.error = {
+        code: 404,
+        details: 'Pagina niet gevonden'
+      }
+
+      res
+        .status(404)
+        .render('error.ejs', result)
     }
+
+  } else {
+    // If the user is not logged in, he/she will not have permission to view this page. The user will be redirected to the login screen and a message shows up saying that the user has to log in to view the information.
+    res
+      .status(401)
+      .send('401 not authorized')
   }
 }
 
 function all(req, res, next) {
+  var result = {
+    title: undefined,
+    user: undefined,
+    error: undefined
+  }
+
   db.collection('users').find().toArray(done)
 
   function done(err, data) {
     if (err) {
       next(err)
     } else {
-      res.render('list.ejs', {data: data, title: htmltitle + 'lijst'})
+      result.title = 'Horeca Dating - Users'
+      result.user = data
+
+      res.render('list.ejs', result)
     }
   }
 }
 
 function signupForm(req, res) {
-  res.render('registration.ejs', {title: htmltitle + 'registration'})
+  var result = {
+    title: 'Horeca Dating - Registratie',
+    user: undefined,
+    error: undefined
+  }
+
+  res.render('registration.ejs', result)
 }
 
 function signup(req, res, next) {
   // Find the email in database and return a callback when found.
+  var result = {
+    title: 'Horeca Dating - Registratie',
+    user: undefined,
+    error: undefined
+  }
+
   db.collection('users').find({email: req.body.email}).count(check)
 
   function check(err, emailCount) {
-    console.log(emailCount)
     if (emailCount > 0) {
+      //Check if the email is already in the database
+      result.user = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        age: req.body.age
+      }
+      result.error = 'Email is al in gebruik'
+
       res
         .status(409)
-        .send('Email already taken.')
+        .render('registration.ejs', result)
       return
     }
     else if (req.body.password !== req.body.passwordConfirm) {
       // Check if the passwords match.
+      result.error = 'Wachtwoorden komen niet overeen'
+      result.user = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        age: req.body.age,
+        email: req.body.email
+      }
+
       res
-        .status(400)
-        .send('Passwords do not match.')
+        .status(422)
+        .render('registration.ejs', result)
       return
     }
     else {
       // If email is not already taken and passwords are correct, hash the password and insert data into database.
-      var pwd = req.body.password
-      argon2.hash(pwd).then(hash => {
+      argon2.hash(req.body.password).then(hash => {
         db.collection('users').insertOne({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -189,23 +305,25 @@ function signup(req, res, next) {
         email: req.body.email,
         password: hash
         }, done)
-      }).catch(err => {
+      }).catch(function (err) {
         console.log(err)
       })
     }
+
     function done(err, data) {
       if (err) {
         next(err)
       } else {
-        // req.session.user = {username: username}
-        res.redirect('/' + data.insertedId)
+        // No errors, so create a new session for the user and redirect the user to the dashboard
+        db.collection('users').findOne({_id: data.insertedId}, function(err, user) {
+          user.password = null
+          req.session.user = user
+          res.redirect('/myaccount')
+        })
       }
     }
   }
-
 }
-
-
 
 function showErrorPage(err, code) {
 

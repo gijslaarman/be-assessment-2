@@ -1,20 +1,24 @@
 <%- include partials/head.ejs %>
 
 <form action="/log-in" method="post">
+
 <h2>Log in:</h2>
-  <fieldset>
-    <label> Email:
+<% if (error) { %>
+  <p>
+    <%= error %>
+  </p>
+<% } %>
+<fieldset>
+  <label> Email:
     <input type="text" name="email" value="">
-    </label>
-    <label> Password:
+  </label>
+  <label> Password:
     <input type="password" name="password" value="">
-    </label>
-  </fieldset>
+  </label>
+</fieldset>
 
   <input class="btn" type="submit" name="submit" value="Meld je aan">
 
 </form>
 
 <a href="/sign-up">Meld je aan bij Horeca Dating</a>
-
-<%- include('tail.ejs') %>

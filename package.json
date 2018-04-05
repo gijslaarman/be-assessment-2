@@ -4,7 +4,7 @@
   "description": "Dating app for Horeca in the Netherlands",
   "main": "index.js",
   "scripts": {
-    "start": "npm start",
+    "start": "node server",
     "test": "nodemon server"
   },
   "keywords": [

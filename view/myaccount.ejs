@@ -2,7 +2,9 @@
 <% include partials/header.ejs %>
 
 <main>
-  <h2>This is my account</h2>
-
-  <button type="button" name="delete">Verwijder account</button>
+  <h2>Mijn account</h2>
+  <h3> <%= user.firstname + ' ' + user.lastname %> </h3>
+  <p> <%= user.age %> </p>
+  <p> <%= user.email %> </p>
+  <button class="btn"type="button" name="delete">Verwijder account</button>
 </main>
