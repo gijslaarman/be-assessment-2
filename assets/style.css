@@ -31,44 +31,6 @@ p {
 /* --- Form ---
 Everything styled for the forms
 */
-@media (min-width: 300px) {
-  body {
-    background-color: #228ae6;
-  }
-  form {
-    width: 100%;
-  }
-  fieldset {
-    width: 90%;
-  }
-  .btn {
-    width: 85%;
-  }
-  a {
-    color: white;
-  }
-}
-
-@media (min-width: 700px) {
-  body {
-    background-color: #fcfcfc;
-  }
-  form {
-    width: 80%;
-    padding: 30px;
-    max-width: 700px;
-    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
-  }
-  fieldset {
-    width: 80%;
-  }
-  .btn {
-    width: 76.5%;
-  }
-  a {
-  color: #228ae6;
-  }
-}
 
 form {
   background-color: #228ae6;
@@ -81,10 +43,27 @@ form {
 
 form p {
   text-align: left;
+  font-weight: 500;
+}
+
+.error, .loginerror{
+  text-align: center;
   color: #e66a22;
   background-color: white;
   padding: 10px 15px;
   border: 1px solid #e66a22;
+}
+
+.loginerror {
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 1em;
+}
+
+form h3 {
+  border-top: 1px solid white;
+  padding: 10px;
+  margin-top: 1em;
 }
 
 .firstForm {
@@ -98,11 +77,6 @@ form p {
 fieldset {
   border: none;
   margin: 0 auto;
-  border-bottom: solid 1px white;
-}
-
-fieldset:last-of-type {
-  border: 0;
 }
 
 label {
@@ -124,12 +98,20 @@ input {
   outline: none;
 }
 
-input:hover {
-  border: 2px solid rgba(255, 255, 255, 0.9);
+textarea {
+  resize: none;
+  width: 100%;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 0;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+  padding: 10px 18px;
+  color: white;
+  outline: none;
 }
 
-input:focus {
-  border: 2px solid rgba(255, 255, 255, 0.9)
+input:hover, input:focus, textarea:hover, textarea:focus {
+  border: 2px solid rgba(255, 255, 255, 0.9);
 }
 
 .btn {
@@ -157,19 +139,78 @@ nav ul{
   justify-content: space-between;
 }
 
-.radioButton-container {
+.radiobuttons p, .field p {
+  display: block;
+  text-align: left;
+  background-color: transparent;
+  color: white;
+  border: 0px;
+  padding: 0;
+}
+
+.radiobuttons, .checkboxes {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+  padding: 0 0 10px 0;
+  margin-top: 0;
+}
+
+.checkboxes {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 
-.radioButton {
+.radiobuttons input[type=radio], .checkboxes input[type=checkbox] {
+  display: none;
+}
+
+.radiobuttons label, .checkboxes label {
+  text-align: center;
+  display: inline-block;
+  background-color: rgba(230, 106, 34, 0.9);
+  border-radius: 3px;
+}
+
+.radiobuttons label {
+  width: 8em;
+  padding: 20px;
+  margin: 1em 2em 0 2em;
+}
+
+.checkboxes label {
+  width: 60px;
+  padding: 20px 10px;
+  margin: 1em 2px 0 2px;
+}
+
+.radiobuttons input[type=radio]:checked + label, .checkboxes input[type=checkbox]:checked + label {
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  background-color: #e66a22;
+}
+
+.field {
+  display: flex;
+  justify-content: space-around;
+  max-width: 250px;
+  margin: 0 auto;
+  align-items: baseline;
+  margin-top: -1em;
+}
+
+.field label {
+  width: 5em;
+}
+
+.field label input {
   text-align: center;
 }
 
-.radioButton input {
-  display: block;
-  margin: 0 auto;
+.field p {
+  margin-top: 0;
 }
+
 
 
 /* --- detail page ---
@@ -231,4 +272,44 @@ nav {
 .account-management p {
   display: inline-block;
   color: white;
+}
+
+@media (min-width: 300px) {
+  body {
+    background-color: #228ae6;
+  }
+  form {
+    width: 100%;
+  }
+  fieldset {
+    width: 90%;
+  }
+  .btn {
+    width: 85%;
+  }
+  a {
+    color: white;
+  }
+
+}
+
+@media (min-width: 700px) {
+  body {
+    background-color: #fcfcfc;
+  }
+  form {
+    width: 80%;
+    padding: 30px;
+    max-width: 700px;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
+  }
+  fieldset {
+    width: 80%;
+  }
+  .btn {
+    width: 76.5%;
+  }
+  a {
+  color: #228ae6;
+  }
 }

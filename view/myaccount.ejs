@@ -4,7 +4,16 @@
 <main>
   <h2>Mijn account</h2>
   <h3> <%= user.firstname + ' ' + user.lastname %> </h3>
-  <p> <%= user.age %> </p>
-  <p> <%= user.email %> </p>
-  <button class="btn"type="button" name="delete">Verwijder account</button>
+  <p> Leeftijd: <%= user.age %> </p>
+  <p> Email: <%= user.email %> </p>
+  <p> Woonplaats: <%= user.place %> </p>
+  <p> Dagen vrij: </p>
+  <% var days = user.preference.days
+  for (var i = 0; i < days.length; i++) { %>
+    <li><%= days[i] %></li>
+  <% } %>
+  <p> Ik drink liever: <%= user.preference.drink %></p>
+
+
+  <button class="btn" type="button" name="delete">Verwijder account</button>
 </main>

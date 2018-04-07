@@ -1,16 +1,25 @@
 <% include partials/head.ejs %>
 <% include partials/header.ejs %>
 <main>
-  <h2>Alle users:</h2>
+  <h2>Dit zijn de <% if (currentUser.preference.genderPref === 'female') { %>
+    <%= 'dames' %>
+  <% } else { %>
+    <%= 'heren' %>
+  <% } %> die wij voor jou hebben gevonden:</h2>
   <section class="list-container">
-    <% for (var i = 0; i < user.length; i++) { %>
-      <a href="/<%= user[i]._id %>">
-        <div class="list-result">
-          <img src="http://via.placeholder.com/150x150" alt="">
-          <h3><%= user[i].firstname %></h3>
-          <p>Leeftijd: <%= user[i].age %></p>
-        </div>
-      </a>
+    <% if (error) { %>
+      <h3> <%= error %> </h3>
     <% } %>
+    <% if (user) { %>
+      <% for (var i = 0; i < user.length; i++) { %>
+        <a href="/<%= user[i]._id %>">
+          <div class="list-result">
+            <img src="http://via.placeholder.com/150x150" alt="">
+            <h3><%= user[i].firstname %></h3>
+            <p>Leeftijd: <%= user[i].age %></p>
+          </div>
+        </a>
+      <% }
+    } %>
   </section>
 </main>

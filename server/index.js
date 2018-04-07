@@ -1,15 +1,13 @@
 'use strict'
 
-const express = require('express')
-const mongo = require('mongodb')
-
-const bodyparser = require('body-parser')
-const session = require('express-session')
-
-const argon2 = require('argon2')
-const mime = require('mime-types')
-
-const port = 3000
+var express = require('express'),
+  mongo = require('mongodb'),
+  bodyparser = require('body-parser'),
+  session = require('express-session'),
+  argon2 = require('argon2'),
+  multer = require('multer'),
+  upload = multer({ dest: 'db/profilepictures'}),
+  port = 3000
 
 require('dotenv').config()
 
@@ -34,18 +32,16 @@ express()
   secret: process.env.SESSION_SECRET
 }))
 
-.get('/', start) // Go to start
+.get('/', start) // Go to start or dashboard if the user is logged in.
 .post('/log-in', login) // User logs in and goes to his dashboard.
 
 .get('/sign-up', signupForm) //redirect to signupForm
-.post('/sign-up', signup) // Adds data from the registration form
+.post('/sign-up', upload.single('photo'), signup) // Adds data from the registration form
 .get('/log-out', logout)
 
-.get('/dashboard', start)
 .get('/myaccount', myAccount)
-.get('/all', all) // See list of all the users currently added
+.get('/all', matches) // See list of all the users currently added
 .get('/:id', getDetail) // Go to the detail page of the user
-
 // Port
 .listen(port)
 
@@ -63,15 +59,16 @@ function myAccount(req, res) {
     result.title = 'Horeca Dating - Mijn Account'
     result.user = req.session.user
 
-    res.render('myaccount.ejs', result)
+    renderPage(res, 'myaccount.ejs', result)
   } else {
     // No access to myAccount when you're not logged in.
-    result
-      .title = 'Horeca Dating - Verboden'
-      .error = {
+    result.title = 'Horeca Dating - Verboden'
+    result.error = {
         code: 401,
         details: 'Geen toegang'
       }
+
+    renderPage(res, 'error.ejs', result)
   }
 
 }
@@ -88,12 +85,12 @@ function start(req, res) {
     result.title = 'Horeca Dating - Dashboard'
     result.user = (req.session.user)
 
-    res.render('dashboard.ejs', result)
+    renderPage(res, 'dashboard.ejs', result)
   } else {
     // User is not logged in.
     result.title = 'Horeca Dating - Login'
 
-    res.render('login.ejs', result)
+    renderPage(res, 'login.ejs', result)
   }
 }
 
@@ -102,23 +99,22 @@ function login(req, res) {
     title: undefined,
     user: undefined,
     error: undefined
-  }
-  var email = req.body.email
-  var password = req.body.password
+  },
+    email = req.body.email,
+    password = req.body.password
 
   if (!email || !password) {
     // Email and password are not given
-    result.title = 'Horeca Dating - 400'
+    result.title = 'Horeca Dating - login'
     result.error = 'Email of wachtwoord mist'
 
-    res
-      .status(400)
-      .render('login.ejs', result)
+    renderPage(res, 'login.ejs', result)
 
-    return
+  } else {
+    db.collection('users').findOne({email: email}, done)
   }
 
-  db.collection('users').findOne({email: email}, function (err, user) {
+  function done(err, user) {
     // All details of the user will be put into the user parameter
     if (user) {
       // Check if the hashed password matches the entered password, if true then it will continue to the onverify function.
@@ -130,19 +126,15 @@ function login(req, res) {
       result.title = 'Horeca Dating - 401'
       result.error = 'Email bestaat niet'
 
-      res
-        .status(401)
-        .render('login.ejs', result)
-      return
+      res.status(400)
+      renderPage(res, 'login.ejs', result)
     }
 
     function onverify(match) {
       if (match) {
-        console.log('Logged in ' + user.email)
-        console.log(user)
+        // If the password matches the hashed password user logs in and starts his session.
         req.session.user = user
-        console.log(req.session.user)
-        res.redirect('/dashboard')
+        res.redirect('/')
       } else {
         // If it's not a match that means the password is incorrect
         result.title = 'Horeca Dating - 401'
@@ -150,10 +142,10 @@ function login(req, res) {
 
         res
           .status(401)
-          .render('login.ejs', result)
+          renderPage(res, 'login.ejs', result)
       }
     }
-  })
+  }
 }
 
 function logout(req, res) {
@@ -167,12 +159,12 @@ function logout(req, res) {
 }
 
 function getDetail(req, res) {
-  var id = req.params.id
-  var result = {
-    title: undefined,
-    user: undefined,
-    error: undefined
-  }
+  var id = req.params.id,
+    result = {
+      title: undefined,
+      user: undefined,
+      error: undefined
+    }
 
   if (req.session.user) {
 
@@ -185,7 +177,7 @@ function getDetail(req, res) {
           result.title = 'Horeca Dating - Details'
           result.user = data
 
-          res.render('detail.ejs', result)
+          renderPage(res, 'detail.ejs', result)
         } else if (err) {
           // Unknown error
           throw err
@@ -197,9 +189,8 @@ function getDetail(req, res) {
             details: 'Pagina niet gevonden'
           }
 
-          res
-            .status(404)
-            .render('error.ejs', result)
+          res.status(404)
+          renderPage(res, 'error.ejs', result)
         }
       }
 
@@ -211,38 +202,73 @@ function getDetail(req, res) {
         details: 'Pagina niet gevonden'
       }
 
-      res
-        .status(404)
-        .render('error.ejs', result)
+      res.status(404)
+      renderPage(res, 'error.ejs', result)
     }
 
   } else {
     // If the user is not logged in, he/she will not have permission to view this page. The user will be redirected to the login screen and a message shows up saying that the user has to log in to view the information.
-    res
-      .status(401)
-      .send('401 not authorized')
+    result.title = 'Horeca Dating - Verboden'
+    result.error = {
+      code: 401,
+      details: 'Pagina is niet bereikbaar, log in om deze pagina te bekijken.'
+    }
+
+    res.status(401)
+    renderPage(res, 'error.ejs', result)
   }
 }
 
-function all(req, res, next) {
+function matches(req, res, next) {
   var result = {
     title: undefined,
     user: undefined,
+    currentUser: undefined,
     error: undefined
+  },
+    currentUser = req.session.user
+
+  if (currentUser) {
+    db.collection('users').find({
+      'gender': currentUser.preference.genderPref,
+      'preference.genderPref': currentUser.gender,
+      'age': { $gte: currentUser.preference.minAge, $lte: currentUser.preference.maxAge},
+      'preference.days': {$in: currentUser.preference.days}
+    }).toArray(done)
+  } else {
+    result.title = 'Horeca Dating - Geen Toegang'
+    result.error = {
+      code: 401,
+      details: 'Geen toegang'
+    }
+
+    res.status(401)
+    renderPage(res, 'error.ejs', result)
+    return
   }
 
-  db.collection('users').find().toArray(done)
 
   function done(err, data) {
     if (err) {
       next(err)
     } else {
-      result.title = 'Horeca Dating - Users'
-      result.user = data
+      result.title = 'Horeca Dating - Matches'
+      result.currentUser = currentUser
 
-      res.render('list.ejs', result)
+      if (data.length === 0) {
+        result.error = 'Er zijn geen matches gevonden.'
+      } else {
+        result.user = data
+        var index = data.indexOf(currentUser._id)
+        if (index !== -1) {
+          data.splice(index, 1)
+        }
+      }
+
+      renderPage(res, 'list.ejs', result)
     }
   }
+
 }
 
 function signupForm(req, res) {
@@ -261,78 +287,122 @@ function signup(req, res, next) {
     title: 'Horeca Dating - Registratie',
     user: undefined,
     error: undefined
-  }
+  },
+    form = req.body
+    form.file = req.file
 
+  // Count the amount of emails with the same email adress
   db.collection('users').find({email: req.body.email}).count(check)
 
   function check(err, emailCount) {
+    // RegExp from https://codereview.stackexchange.com/questions/65190/email-validation-using-javascript
+    var regex = /^([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)@([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)[\\.]([a-zA-Z]{2,9})$/
+    result.user = {
+      firstname: form.firstname,
+      lastname: form.lastname,
+      age: form.age,
+      email: form.email,
+      place: form.place,
+      preference: {
+        minAge: form.minAge,
+        maxAge: form.maxAge
+      },
+      bio: form.bio
+    }
+
     if (emailCount > 0) {
       //Check if the email is already in the database
-      result.user = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        age: req.body.age
-      }
       result.error = 'Email is al in gebruik'
 
-      res
-        .status(409)
-        .render('registration.ejs', result)
+      res.status(409)
+      renderPage(res, 'registration.ejs', result)
       return
     }
-    else if (req.body.password !== req.body.passwordConfirm) {
+    else if (form.password !== form.passwordConfirm) {
       // Check if the passwords match.
       result.error = 'Wachtwoorden komen niet overeen'
-      result.user = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        age: req.body.age,
-        email: req.body.email
+
+      res.status(422)
+      renderPage(res, 'registration.ejs', result)
+      return
+    } else if (!regex.test(form.email)) {
+      // Checks the regex if the email entered is a valid email adres format
+      result.error = 'Geen geldig email adres'
+
+      res.status(422)
+      renderPage(res, 'registration.ejs', result)
+      return
+    } else if (form.minAge > form.maxAge) {
+      // Checks if the minimum age is not higher than the maximum age, if it is send back an error.
+      result.error = 'De minimale leeftijd kan niet hoger zijn dan de maximale leeftijd'
+
+      res.status(422)
+      renderPage(res, 'registration.ejs', result)
+      return
+    } else {
+      // If email is not already taken and passwords are correct, hash the password and insert data into database.
+      argon2.hash(form.password).then(insertUser).catch(catchErr)
+    }
+  }
+    function insertUser(hash) {
+      db.collection('users').insertOne({
+        firstname: form.firstname,
+        lastname: form.lastname,
+        age: form.age,
+        gender: form.gender,
+        place: form.place,
+        email: form.email,
+        password: hash,
+        preference: {
+          genderPref: form.preference,
+          minAge: form.minAge,
+          maxAge: form.maxAge,
+          drink: form.drink,
+          person: form.morningEvening,
+          days: form.days
+        },
+        photo: form.photo,
+        bio: form.bio
+      }, done)
+    }
+
+    function catchErr(err) {
+      result.title = 'Horeca Dating - Error'
+      result.error = {
+        code: null,
+        details: err
       }
 
-      res
-        .status(422)
-        .render('registration.ejs', result)
-      return
-    }
-    else {
-      // If email is not already taken and passwords are correct, hash the password and insert data into database.
-      argon2.hash(req.body.password).then(hash => {
-        db.collection('users').insertOne({
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        age: req.body.age,
-        email: req.body.email,
-        password: hash
-        }, done)
-      }).catch(function (err) {
-        console.log(err)
-      })
+      renderPage(res, 'error.ejs', result)
     }
 
     function done(err, data) {
       if (err) {
-        next(err)
+        throw err
       } else {
         // No errors, so create a new session for the user and redirect the user to the dashboard
-        db.collection('users').findOne({_id: data.insertedId}, function(err, user) {
-          user.password = null
-          req.session.user = user
-          res.redirect('/myaccount')
-        })
+        db.collection('users').findOne({_id: data.insertedId}, setUpSession)
+        }
       }
+
+    function setUpSession(err, user) {
+      user.password = null
+      req.session.user = user
+
+      res.redirect('/myaccount')
     }
-  }
-}
 
-function showErrorPage(err, code) {
-
-  data = {
-    img: code + '.png',
-    code: code
   }
+
+
+
+function renderPage(res, path, result) {
   res.format({
-    json: () => res.json(result),
-    html: () => res.render('error.ejs', {title: code, data: data})
+    json: function() {
+      res.json(result)
+    },
+    html: function() {
+      res.render(path, result)
+    }
   })
 }

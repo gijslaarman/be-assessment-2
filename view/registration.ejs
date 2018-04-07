@@ -3,22 +3,95 @@
 <a href="/">Terug naar start</a>
 
 <form action="/sign-up" method="post">
+  <% if (error) { %>
+    <p class="error" id="error">
+      Er is iets mis gegaan:<br>
+      <%= error %>
+    </p>
+  <% } %>
     <h2>Meld je aan:</h2>
     <fieldset>
+      <h3>Over jou</h3>
       <label>Voornaam: <input name="firstname" value="<%if(user){%><%=user.firstname%><%}%>" required></label>
       <label>Achternaam: <input name="lastname" value="<%if(user){%><%=user.lastname%><%}%>" required></label>
       <label>Leeftijd: <input type="number" name="age" value="<%if(user){%><%=user.age%><%}%>" required></label>
+      <p>Geslacht:</p>
+      <div class="radiobuttons">
+          <input id="sex-male" type="radio" name="gender" value="male" checked>
+          <label for="sex-male">Man</label>
+          <input id="sex-female" type="radio" name="gender" value="female">
+          <label for="sex-female">Vrouw</label>
+      </div>
+      <label>Woonplaats: <input name="place" value="<%if(user){%><%=user.place%><%}%>"></label>
     </fieldset>
 
     <fieldset>
-      <% if (error) { %>
-        <p>
-          <%= error %>
-        </p>
-      <% } %>
+      <h3>Account gegevens</h3>
       <label>Email: <input name="email" value="<%if(user){%><%=user.email%><%}%>" required></label>
       <label>Kies een wachtwoord: <input type="password" name="password" required></label>
       <label>Herhaal wachtwoord: <input type="password" name="passwordConfirm" required></label>
+    </fieldset>
+
+    <fieldset>
+      <h3>Waar ben je naar opzoek</h3>
+
+      <p>Geslacht:</p>
+      <div class="radiobuttons">
+          <input id="preference-male" type="radio" name="preference" value="male" checked>
+          <label for="preference-male">Man</label>
+          <input id="preference-female" type="radio" name="preference" value="female">
+          <label for="preference-female">Vrouw</label>
+      </div>
+      <p>Leeftijd:</p>
+      <div class="field">
+        <label> <input name="minAge" type="number" value="<%if(user){%><%=user.preference.minAge%><%}else{%><%=18%><%}%>"></label>
+        <p>tot</p>
+        <label> <input name="maxAge" type="number" value="<%if(user){%><%=user.preference.maxAge%><%}else{%><%=25%><%}%>"></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <h3>Wat voor persoon ben je</h3>
+
+      <label>Upload een foto: <input type="file" accept="image/*" name="photo"> </label>
+
+      <label>Schrijf kort op wie jij bent:
+        <textarea name="bio" rows="5" cols="80"><%if(user){%><%=user.bio%><%}%></textarea>
+      </label>
+
+      <p>Bier of wijn?</p>
+      <div class="radiobuttons">
+          <input id="beer" type="radio" name="drink" value="bier">
+          <label for="beer">Bier</label>
+          <input id="wine" type="radio" name="drink" value="wijn" checked>
+          <label for="wine">Wijn</label>
+      </div>
+
+      <p>Ben je een ochtend of avond mens?</p>
+      <div class="radiobuttons">
+          <input id="morning" type="radio" name="morningEvening" value="ochtend">
+          <label for="morning">Ochtend</label>
+          <input id="evening" type="radio" name="morningEvening" value="avond" checked>
+          <label for="evening">Avond</label>
+      </div>
+
+      <p>Welke dagen ben je (meestal) vrij?</p>
+      <div class="checkboxes">
+          <input id="monday" type="checkbox" name="days" value="maandag">
+          <label for="monday">Ma</label>
+          <input id="tuesday" type="checkbox" name="days" value="dinsdag">
+          <label for="tuesday">Di</label>
+          <input id="wednesday" type="checkbox" name="days" value="woensdag">
+          <label for="wednesday">Woe</label>
+          <input id="thursday" type="checkbox" name="days" value="donderdag">
+          <label for="thursday">Do</label>
+          <input id="friday" type="checkbox" name="days" value="vrijdag">
+          <label for="friday">Vrij</label>
+          <input id="saturday" type="checkbox" name="days" value="zaterdag">
+          <label for="saturday">Zat</label>
+          <input id="sunday" type="checkbox" name="days" value="zondag">
+          <label for="sunday">Zon</label>
+      </div>
     </fieldset>
 
   <input type="submit" class="btn" value="Registreer!">
