@@ -2,7 +2,7 @@
 
 <a href="/">Terug naar start</a>
 
-<form action="/sign-up" method="post">
+<form action="/sign-up" method="post" enctype="multipart/form-data">
   <% if (error) { %>
     <p class="error" id="error">
       Er is iets mis gegaan:<br>
@@ -52,8 +52,8 @@
 
     <fieldset>
       <h3>Wat voor persoon ben je</h3>
-
-      <label>Upload een foto: <input type="file" accept="image/*" name="photo"> </label>
+      <p>Upload een leuke foto van jouzelf:</p>
+      <input type="file" name="photo" accept="image/*">
 
       <label>Schrijf kort op wie jij bent:
         <textarea name="bio" rows="5" cols="80"><%if(user){%><%=user.bio%><%}%></textarea>

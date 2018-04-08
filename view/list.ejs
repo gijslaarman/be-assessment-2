@@ -14,7 +14,9 @@
       <% for (var i = 0; i < user.length; i++) { %>
         <a href="/<%= user[i]._id %>">
           <div class="list-result">
-            <img src="http://via.placeholder.com/150x150" alt="">
+            <div class="smallimg-container">
+              <img src="<%if(user[i].userPhoto){%><%='/image/profilepic/'+user[i].userPhoto%><%}else{%><%='/image/default.png'%><%}%>" alt="No picture here">
+            </div>
             <h3><%= user[i].firstname %></h3>
             <p>Leeftijd: <%= user[i].age %></p>
           </div>

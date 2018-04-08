@@ -28,6 +28,33 @@ p {
   margin-top: 1em;
 }
 
+.img-container {
+  width: 300px;
+  height: 300px;
+  line-height: 300px;
+  background-color: white;
+  text-align: center;
+  margin: 1em auto;
+}
+
+.img-container img {
+  max-width: 300px;
+  max-height: 300px;
+  vertical-align: middle;
+}
+
+.smallimg-container {
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  text-align: center;
+}
+
+.smallimg-container img {
+  max-height: 150px;
+  max-width: 150px;
+  vertical-align: middle;
+}
 /* --- Form ---
 Everything styled for the forms
 */
@@ -222,11 +249,6 @@ nav ul{
   padding: 30px;
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
   width: 400px;
-  margin: 0 auto;
-}
-
-.detail-container img {
-  width: 300px;
   margin: 0 auto;
 }
 

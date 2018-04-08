@@ -3,6 +3,9 @@
 
 <main>
   <h2>Mijn account</h2>
+  <div class="img-container">
+    <img src="<%if(user.userPhoto){%><%='/image/profilepic/'+user.userPhoto%><%}else{%><%='/image/default.png'%><%}%>" alt="Profile picture">
+  </div>
   <h3> <%= user.firstname + ' ' + user.lastname %> </h3>
   <p> Leeftijd: <%= user.age %> </p>
   <p> Email: <%= user.email %> </p>
@@ -14,6 +17,5 @@
   <% } %>
   <p> Ik drink liever: <%= user.preference.drink %></p>
 
-
-  <button class="btn" type="button" name="delete">Verwijder account</button>
+  <a href="/removeUser" class="btn">Verwijder account</a>
 </main>

@@ -1,14 +1,18 @@
 <% include partials/head.ejs %>
 <% include partials/header.ejs %>
 <main>
-  <a href="/all"> <- terug </a>
+  <a href="/mymatches"> <- terug </a>
   <div class="detail-container">
-    <img src="http://via.placeholder.com/300x300" alt="Userphoto">
+    <div class="img-container">
+      <img src="<%if(user.userPhoto){%><%='/image/profilepic/'+user.userPhoto%><%}else{%><%='/image/default.png'%><%}%>" alt="Userphoto">
+    </div>
     <h2><%= user.firstname %></h2>
       <h3>Details:</h3>
       <p>Leeftijd: <%= user.age %></p>
-      <p>Woonplaats: <%= user.place %></p>
       <p>Dagen vrij: <%= user.preference.days %></p>
+      <p><%= user.firstname %> is opzoek naar: Een <% if (user.preference.genderPref === 'male') {%> <%= 'jongen' %> <%}else{%> <%= 'meisje' %><%}%> tussen de <%= user.preference.minAge %> en <%= user.preference.maxAge %> jaar. </p>
+      <p>Woonplaats: <%= user.place %></p>
+
       <p><%= user.firstname %> drinkt het liefst: <%= user.preference.drink %></p>
   </div>
 </main>

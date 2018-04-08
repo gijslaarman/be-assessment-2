@@ -6,7 +6,7 @@ var express = require('express'),
   session = require('express-session'),
   argon2 = require('argon2'),
   multer = require('multer'),
-  upload = multer({ dest: 'db/profilepictures'}),
+  upload = multer({ dest: 'assets/images/profilepic'}),
   port = 3000
 
 require('dotenv').config()
@@ -40,7 +40,9 @@ express()
 .get('/log-out', logout)
 
 .get('/myaccount', myAccount)
-.get('/all', matches) // See list of all the users currently added
+.get('/removeUser', removeUser)
+
+.get('/mymatches', matches) // See list of all the users currently added
 .get('/:id', getDetail) // Go to the detail page of the user
 // Port
 .listen(port)
@@ -53,7 +55,7 @@ function myAccount(req, res) {
     user: undefined,
     error: undefined
   }
-
+  console.log(req.session.user)
   if (req.session.user) {
     // Check if the user is logged in.
     result.title = 'Horeca Dating - Mijn Account'
@@ -70,6 +72,36 @@ function myAccount(req, res) {
 
     renderPage(res, 'error.ejs', result)
   }
+
+}
+
+function removeUser(req, res) {
+  var result = {
+    title: 'Account verwijderd - Horeca Dating',
+    user: undefined,
+    error: {
+      code: 204,
+      details: 'Account succesvol verwijderd'
+    }
+  },
+  id = req.session.user._id
+
+  req.session.destroy(deleteRow)
+
+  function deleteRow(err) {
+    if (err) {
+      throw err
+    } else {
+      db.collection('users').deleteOne({_id: mongo.ObjectId(id)}, doneRemoving)
+
+      function doneRemoving() {
+        res.status(204)
+        res.redirect('/')
+      }
+    }
+  }
+
+
 
 }
 
@@ -149,13 +181,15 @@ function login(req, res) {
 }
 
 function logout(req, res) {
-  req.session.destroy(function (err) {
+  req.session.destroy(loggedOut)
+
+  function loggedOut(err) {
     if (err) {
       throw err
     } else {
       res.redirect('/')
     }
-  })
+  }
 }
 
 function getDetail(req, res) {
@@ -289,10 +323,11 @@ function signup(req, res, next) {
     error: undefined
   },
     form = req.body
-    form.file = req.file
 
+  console.log(req.file, 'file')
+  console.log(form, 'body')
   // Count the amount of emails with the same email adress
-  db.collection('users').find({email: req.body.email}).count(check)
+  db.collection('users').find({email: form.email}).count(check)
 
   function check(err, emailCount) {
     // RegExp from https://codereview.stackexchange.com/questions/65190/email-validation-using-javascript
@@ -344,6 +379,17 @@ function signup(req, res, next) {
       argon2.hash(form.password).then(insertUser).catch(catchErr)
     }
   }
+
+    function catchErr(err) {
+      result.title = 'Horeca Dating - Error'
+      result.error = {
+        code: null,
+        details: err
+      }
+
+      renderPage(res, 'error.ejs', result)
+    }
+
     function insertUser(hash) {
       db.collection('users').insertOne({
         firstname: form.firstname,
@@ -361,19 +407,9 @@ function signup(req, res, next) {
           person: form.morningEvening,
           days: form.days
         },
-        photo: form.photo,
+        userPhoto: req.file.filename,
         bio: form.bio
       }, done)
-    }
-
-    function catchErr(err) {
-      result.title = 'Horeca Dating - Error'
-      result.error = {
-        code: null,
-        details: err
-      }
-
-      renderPage(res, 'error.ejs', result)
     }
 
     function done(err, data) {
@@ -389,6 +425,8 @@ function signup(req, res, next) {
       user.password = null
       req.session.user = user
 
+
+      res.status(201)
       res.redirect('/myaccount')
     }
 
