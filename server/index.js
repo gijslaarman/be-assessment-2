@@ -332,9 +332,7 @@ function signup(req, res, next) {
     error: undefined
   },
     form = req.body
-
-  console.log(req.file, 'file')
-  console.log(form, 'body')
+  
   // Count the amount of emails with the same email adress
   db.collection('users').find({email: form.email}).count(check)
 
