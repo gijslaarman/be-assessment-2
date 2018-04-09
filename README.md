@@ -1,11 +1,13 @@
 # be-assessment-2 Horeca Dating
 
+![Screenshot](https://image.ibb.co/nQdPwc/image.png)
+
 ## Table of Contents
 * [What is Horeca Dating](#app)
 * [Installation](#install)
-  1. [Setting up NodeJS & MongoDB](#install1)
-  2. [Cloning this repository](#install2)
-  3. [Almost there](#install3)
+  * [Setting up NodeJS & MongoDB](#install1)
+  * [Cloning this repository](#install2)
+  * [Almost there](#install3)
 * []
 
 ## <a name="app"></a> Horeca Dating :beers:
@@ -15,18 +17,23 @@ The new dating app for Horeca personnel. Say goodbye to missing each other out. 
 Here is a step by step guideline to install this app.
 
 #### 1. <a name="install1"></a> Setting up NodeJs & MongoDB:
-1. Make sure nodeJS is installed, check in terminal with: `node -v` if it is installed it will return a value which is the version. :thumbsup:
+
+*These steps can be skipped if you already have NodeJS and MongoDB installed.*
+
+1. Make sure nodeJS is installed, check in terminal with: `node -v` if it is installed it will return a value which is the version. :thumbsup:.  
+If it is not installed go to [NodeJS](https://nodejs.org/en/) and download Node.
+2. Let's install MongoDB, first make sure [Homebrew](https://brew.sh/) is installed.
+3. Install MongoDB:  
+``brew install mongodb``
 
 #### 2. <a name="install2"></a> Cloning this repository:
 1. Open your terminal.
-2. Go into the desired folder where you wish this repository to be:  
-``cd Documents/techstuff/``
-3. Make a new folder:  
-``mkdir dating-app``
-4. cd into the folder:  
-`` cd dating-app/ ``
-5. Install this repository by copying this into the terminal:  
+2. Make the desired folder where you wish this repository to be.
+3. `cd` into the folder, like so:
+``cd Documents/~path``
+4. Install this repository by copying this into the terminal:  
 ``git clone https://github.com/gijslaarman/be-assessment-2.git``
+5.
 
 #### 3. <a name="install3"></a> Almost there:
 1. Install all the dependencies:  
