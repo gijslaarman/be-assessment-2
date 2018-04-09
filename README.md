@@ -19,7 +19,7 @@ The new dating app for Horeca personnel. Say goodbye to missing each other out. 
 ## Installation: <a name="install"></a>
 Here is a step by step guideline to install this app.
 
-#### 1. Setting up NodeJs & MongoDB: <a name="install1"></a>
+### 1. Setting up NodeJs & MongoDB: <a name="install1"></a>
 
 **_These steps can be skipped if you already have NodeJS and MongoDB installed._**
 
@@ -32,7 +32,7 @@ If it is not installed go to [NodeJS](https://nodejs.org/en/) and download Node.
 brew install mongodb
 ```
 
-#### 2. Installing this repository: <a name="install2"></a>
+### 2. Installing this repository: <a name="install2"></a>
 1. Open the terminal.
 2. Make the desired folder where you wish this repository to be.
 3. `cd` into the folder, like so:  
@@ -82,7 +82,7 @@ SESSION_SECRET=ilovehoreca" >> .env
 Here we will save the database name (DB_NAME) you should keep the HOST, PORT & ROOT as it is, if you want to run this app on your localhost. Or adjust it if you know what you're doing.
 
 
-#### 3. Install all dependencies: <a name="install3"></a>
+### 3. Install all dependencies: <a name="install3"></a>
 Almost there!
 1. Install all the dependencies:  
 ```bash
@@ -162,7 +162,7 @@ How the user schema looks, this gets filled in through the registration:
 
 This is one row in the 'users' database. If the user does not fill in the non required fields it will stay empty, and the User will get the placeholder photo. When the user logs in it will make a req.session.user filled with this data. From there the EJS template get their data.
 
-**Small overview of things I still intended to do*:**
+**Small overview of things I still intended to do:**
 - [ ] Add chat system
 - [ ] Edit data of your Account
 - [ ] Make the dashboard show all the chats you currently have with a person.
