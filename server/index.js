@@ -6,7 +6,7 @@ var express = require('express'),
   session = require('express-session'),
   argon2 = require('argon2'),
   multer = require('multer'),
-  upload = multer({ dest: 'assets/images/profilepic'}),
+  uploadProfilePic = multer({ dest: 'assets/images/profilepic'}),
   port = 3000
 
 require('dotenv').config()
@@ -35,19 +35,18 @@ express()
 .get('/', start) // Go to start or dashboard if the user is logged in.
 .post('/log-in', login) // User logs in and goes to his dashboard.
 
-.get('/sign-up', signupForm) //redirect to signupForm
-.post('/sign-up', upload.single('photo'), signup) // Adds data from the registration form
+.get('/sign-up', signupForm)
+.post('/sign-up', uploadProfilePic.single('photo'), signup) // Adds data from the registration form and uploads the 'photo' to assets/images/profilepic, if this map doesn't exist Multer will make one automatically.
 .get('/log-out', logout)
 
 .get('/myaccount', myAccount)
-.get('/removeUser', removeUser)
+.get('/removeUser', removeUser) // If the user wants to delete their account through the browser
+.delete('/:id', removeUser) // Remove user through the terminal, not safe right now for public use.
 
-.get('/mymatches', matches) // See list of all the users currently added
-.get('/:id', getDetail) // Go to the detail page of the user
+.get('/mymatches', matches) // See list of all potential matches with for the User
+.get('/:id', getDetail) // Go to the detail page of the potential match
 // Port
 .listen(port)
-
-// Title "template"
 
 function myAccount(req, res) {
   var result = {
@@ -84,25 +83,35 @@ function removeUser(req, res) {
       details: 'Account succesvol verwijderd'
     }
   },
-  id = req.session.user._id
+  _id = req.session.user._id,
+  id = req.params.id
 
-  req.session.destroy(deleteRow)
+  if (req.session.user) {
+    // If the user is logged in and clicks the remove account button.
+    db.collection('users').deleteOne({_id: mongo.ObjectId(_id)}, doneRemoving)
+  } else {
+    // Remove the user through the terminal with request DELETE and the given id number.
+    db.collection('users').deleteOne({_id: id}, doneRemoving)
+  }
 
-  function deleteRow(err) {
+  function doneRemoving(err) {
     if (err) {
-      throw err
-    } else {
-      db.collection('users').deleteOne({_id: mongo.ObjectId(id)}, doneRemoving)
+      res.send(err)
+      return
+    }
 
-      function doneRemoving() {
-        res.status(204)
-        res.redirect('/')
-      }
+    if (req.session.user) {
+      req.session.destroy(renderSucces)
+    } else {
+      renderSucces()
     }
   }
 
-
-
+  function renderSucces() {
+    res
+      .status(204)
+      .redirect('/')
+  }
 }
 
 function start(req, res) {
