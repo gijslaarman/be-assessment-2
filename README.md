@@ -140,24 +140,26 @@ Horeca Dating contains the following pages:
 
 How the user schema looks, this gets filled in through the registration:
 ```
-"_id": "5aca516db2a67048f2cd3cff",
-"firstname": "Gijs",
-"lastname": "Laarman",
-"age": "21",
-"gender": "male",
-"place": "Amsterdam",
-"email": "gijslaarman@live.nl",
-"password":"$argon2i$v=19$m=4096,t=3,p=1$vaUGQtKcBRJfzxWsjCOJ+Q$vB35lQDf4X1Qr4XhU9c49+39bYhpYInFD+s/dO4brNY",
-"preference": {
-  "genderPref": "female",
-  "minAge": "18",
-  "maxAge": "22",
-  "drink": "bier",
-  "person": "avond",
-  "days":["maandag","dinsdag"]
-},
-"userPhoto": "ff4e2601b696610e878932777f4cfcdd", // This is the file name.
-"bio": "Ik ben Gijs"}
+{
+ "_id": "5aca516db2a67048f2cd3cff",
+ "firstname": "Gijs",
+ "lastname": "Laarman",
+ "age": "21",
+ "gender": "male",
+ "place": "Amsterdam",
+ "email": "gijslaarman@live.nl",
+ "password":"$argon2i$v=19$m=4096,t=3,p=1$vaUGQtKcBRJfzxWsjCOJ+Q$vB35lQDf4X1Qr4XhU9c49+39bYhpYInFD+s/dO4brNY",
+ "preference": {
+   "genderPref": "female",
+   "minAge": "18",
+   "maxAge": "22",
+   "drink": "bier",
+   "person": "avond",
+   "days":["maandag","dinsdag"]
+ },
+ "userPhoto": "ff4e2601b696610e878932777f4cfcdd", // This is the file name.
+ "bio": "Ik ben Gijs"
+}
 ```
 
 This is one row in the 'users' database. If the user does not fill in the non required fields it will stay empty, and the User will get the placeholder photo. When the user logs in it will make a req.session.user filled with this data. From there the EJS template get their data.
