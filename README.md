@@ -162,6 +162,14 @@ How the user schema looks, this gets filled in through the registration:
 
 This is one row in the 'users' database. If the user does not fill in the non required fields it will stay empty, and the User will get the placeholder photo. When the user logs in it will make a req.session.user filled with this data. From there the EJS template get their data.
 
+**Small overview of things I still intended to do*:**
+- [ ] Add chat system
+- [ ] Edit data of your Account
+- [ ] Make the dashboard show all the chats you currently have with a person.
+- [ ] ~ Being able to send a person a "like"
+
+'~' = Not a must
+
 ## What I thought <a name="WIT"></a>
 I found this a very very though project, but also very informative. I learned a lot, not only a new way of creating websites but also how to better think like a programmer. I got more patient with coding and understand that Rome is not build in a one day. I definitely feel like front-end is my thing, I enjoy coding and solving my problems gives a me happy boost (as my friends and housemates might have noticed, I do shout very loud when it works.)
 
