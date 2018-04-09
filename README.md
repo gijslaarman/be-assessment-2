@@ -11,6 +11,7 @@
 * [Node Dependencies Used](#dependencies)
 * [Shortcuts](#shortcuts)
 * [Documentation on Horeca Dating](#documenting)
+* [What I thought](#WIT)
 
 ## Horeca Dating :beers: <a name="app"></a>
 The new dating app for Horeca personnel. Say goodbye to missing each other out. Meet people that have the same days off and spend some quality time with them on those days!
@@ -124,7 +125,7 @@ npm test
 ## Documentation on Horeca Dating <a name="documenting"></a>
 
 Horeca Dating contains the following pages:
-* **Login / '/'**: This is where the client will be directed to if he/she is not logged in. I wanted to make the start page and login into one page.
+* **Login & '/'**: This is where the client will be directed to if he/she is not logged in. I wanted to make the start page and login into one page.
 * **Register**: Directed to '/signup' accessible through login. A user has to fill in a form, with plenty of error handling:
   * If email already exists.
   * If the email is a valid email adres.
@@ -136,3 +137,36 @@ Horeca Dating contains the following pages:
 * **Detail of matches**: Renders a detail page of one of your matches. _I want to add a send message function from here._
 * **My account**: Get an overview of your details. _Adding editing account details later_.
 * **Error page**: Renders error with a picture with the corresponding error code.
+
+How the user schema looks, this gets filled in through the registration:
+```
+"_id": "5aca516db2a67048f2cd3cff",
+"firstname": "Gijs",
+"lastname": "Laarman",
+"age": "21",
+"gender": "male",
+"place": "Amsterdam",
+"email": "gijslaarman@live.nl",
+"password":"$argon2i$v=19$m=4096,t=3,p=1$vaUGQtKcBRJfzxWsjCOJ+Q$vB35lQDf4X1Qr4XhU9c49+39bYhpYInFD+s/dO4brNY",
+"preference": {
+  "genderPref": "female",
+  "minAge": "18",
+  "maxAge": "22",
+  "drink": "bier",
+  "person": "avond",
+  "days":["maandag","dinsdag"]
+},
+"userPhoto": "ff4e2601b696610e878932777f4cfcdd", // This is the file name.
+"bio": "Ik ben Gijs"}
+```
+
+This is one row in the 'users' database. If the user does not fill in the non required fields it will stay empty, and the User will get the placeholder photo. When the user logs in it will make a req.session.user filled with this data. From there the EJS template get their data.
+
+## What I thought <a name="WIT"></a>
+I found this a very very though project, but also very informative. I learned a lot, not only a new way of creating websites but also how to better think like a programmer. I got more patient with coding and understand that Rome is not build in a one day. I definitely feel like front-end is my thing, I enjoy coding and solving my problems gives a me happy boost (as my friends and housemates might have noticed, I do shout very loud when it works.)
+
+This project helped my improve my knowledge, it had a very steep learning curve, which demotivated me for a week, I started trailing behind, but spending long days on improving this knowledge helped me come back into the project. I do think that I could have done a lot more if I had one more week, but I suppose you could say that after that one week as well.
+
+Overall I was very happy with my teachers, they helped me motivate me and show that this is fun. This project is not for everyone and only people that actually dare to invest time in learning how to code.
+
+****
