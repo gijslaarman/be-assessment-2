@@ -16,7 +16,6 @@
   "dependencies": {
     "argon2": "^0.17.3",
     "body-parser": "^1.18.2",
-    "chalk": "^2.3.2",
     "dotenv": "^5.0.1",
     "ejs": "^2.5.8",
     "express": "^4.16.3",

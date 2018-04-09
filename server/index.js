@@ -54,7 +54,7 @@ function myAccount(req, res) {
     user: undefined,
     error: undefined
   }
-  console.log(req.session.user)
+
   if (req.session.user) {
     // Check if the user is logged in.
     result.title = 'Horeca Dating - Mijn Account'
@@ -241,11 +241,11 @@ function getDetail(req, res) {
       // If the user is logged in but the id is not correct send a 404 error.
       result.title = 'Horeca Dating - Niet Gevonden'
       result.error = {
-        code: 404,
-        details: 'Pagina niet gevonden'
+        code: 400,
+        details: 'Bad request'
       }
 
-      res.status(404)
+      res.status(400)
       renderPage(res, 'error.ejs', result)
     }
 
